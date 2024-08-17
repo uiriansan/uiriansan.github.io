@@ -1,12 +1,12 @@
 @font-face {
   font-family: 'Inter';
-  src: url('fonts/InterVariableFont.ttf');
+  src: url('/fonts/Inter/InterVariableFont.ttf');
   font-style: normal;
 }
 
 @font-face {
   font-family: 'InterItalic';
-  src: url('fonts/InterItalicVariableFont.ttf');
+  src: url('/fonts/Inter/InterItalicVariableFont.ttf');
   font-style: italic;
 }
 
