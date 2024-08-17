@@ -37,14 +37,14 @@
      } ,
     en: {
       title: "Under construction",
-      paragraph: "Since you are here, you might as well take a look at my socials:"
+      paragraph: "Since you're here, you might as well take a look at my socials:"
     }
   };
 </script>
 
 <T.PerspectiveCamera
   makeDefault
-  position={[-20, 0, 30]}
+  position={[-20, 15, 30]}
   {fov}
 >
   <OrbitControls />
