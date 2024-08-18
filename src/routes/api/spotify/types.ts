@@ -1,14 +1,14 @@
-export interface Artist {
+interface Artist {
   name : string;
   url : string;
 }
 
-export interface Album {
+interface Album {
   title : string;
   cover : string;
 }
 
-export interface Track {
+interface Track {
   title : string;
   url : string;
   album : Album;
@@ -17,28 +17,34 @@ export interface Track {
   duration : number | null;
 }
 
-export interface NowPlaying {
+interface NowPlaying {
   playing : true;
   track : Track;
 }
 
-export interface RecentlyPlayed {
+interface RecentlyPlayed {
   playing : false;
   tracks : Track[];
   played_at : string;
 }
 
-export const mapArtist = (artist: any) : Artist => ({
+interface PlayerData {
+  message : 'success' | 'error';
+  code : number;
+  data : NowPlaying | RecentlyPlayed | null;
+}
+
+const mapArtist = (artist: any) : Artist => ({
   name: artist.name,
   url: artist.external_urls.spotify
 });
 
-export const mapAlbum = (src : any) : Album => ({
+const mapAlbum = (src : any) : Album => ({
   title: src.name,
   cover: src.images[0].url
 });
 
-export const mapPlayingTrack = (data : any) : Track => ({
+const mapPlayingTrack = (data : any) : Track => ({
   title: data.item.name,
   url: data.item.external_urls.spotify,
   progress: data.progress_ms,
@@ -47,7 +53,7 @@ export const mapPlayingTrack = (data : any) : Track => ({
   artists: data.item.artists.map(mapArtist)
 });
 
-export const mapRecentTrack = (item: any) : Track => ({
+const mapRecentTrack = (item: any) : Track => ({
   title: item.track.name,
   url: item.track.external_urls.spotify,
   progress: null,
@@ -56,13 +62,19 @@ export const mapRecentTrack = (item: any) : Track => ({
   artists: item.track.artists.map(mapArtist)
 });
 
-export const mapNowPlaying = (data : any) : NowPlaying => ({
+const mapNowPlaying = (data : any) : NowPlaying => ({
   playing: true,
   track: mapPlayingTrack(data),
 });
 
-export const mapRecentlyPlayed = (data : any) : RecentlyPlayed => ({
+const mapRecentlyPlayed = (data : any) : RecentlyPlayed => ({
   playing: false,
   tracks: data.items.map(mapRecentTrack),
   played_at: data.items[0].played_at
 });
+
+export {
+  type PlayerData,
+  mapNowPlaying,
+  mapRecentlyPlayed
+}
