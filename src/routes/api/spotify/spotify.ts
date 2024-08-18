@@ -1,4 +1,4 @@
-import { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN, SPOTIFY_REDIRECT_URI } from '$env/static/private';
+import { SPOTIFY_CLIENT, SPOTIFY_REFRESH_TOKEN, SPOTIFY_REDIRECT_URI } from '$env/static/private';
 import type { PlayerData } from './types';
 import { mapNowPlaying, mapRecentlyPlayed } from './types';
 
@@ -11,7 +11,7 @@ const getAccessToken = async () => {
     method: 'POST',
     headers: {
       'content-type': 'application/x-www-form-urlencoded',
-      'Authorization': 'Basic ' + (new Buffer.from(SPOTIFY_CLIENT_ID + ':' + SPOTIFY_CLIENT_SECRET).toString('base64'))
+      'Authorization': `Basic ${SPOTIFY_CLIENT}`
     },
     body: new URLSearchParams({
       grant_type: 'refresh_token',
