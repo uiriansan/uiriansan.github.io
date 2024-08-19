@@ -28,38 +28,22 @@ const buildSpotifyCommonHeaders = (access_token : string) => ({
   Authorization: `Bearer ${access_token}`  
 });
 
-
-export const getPlayerData = async () : Promise<PlayerData> => {
+export const getPlayer = async (playing : boolean) : Promise<PlayerData> => {
   const access_token = await getAccessToken();
 
-  let response = await fetch(now_playing_endpoint, {
+  let response = await fetch(playing ? now_playing_endpoint : recently_played_endpoint, {
     headers: buildSpotifyCommonHeaders(access_token)
   });
 
-  // Nothing playing, get recently played instead
-  if(response.status === 204) {
-    response = await fetch(recently_played_endpoint, {
-      headers: buildSpotifyCommonHeaders(access_token)
-    });
-  
-    if(response.status !== 200)
-      return { message: 'error', code: response.status, data: null };
-
-    const player_data = await response.json();
-
-    if(!player_data?.items)
-      return { message: 'error', code: -1, data: null };
-
-    return { message: 'success', code: 200, data: mapRecentlyPlayed(player_data) };
-    
-  } else if(response.status !== 200)
+  if(response.status !== 200)
     return { message: 'error', code: response.status, data: null };
   
-  const player_data = await response.json();
+  const data = await response.json();
+  
+  if(!data?.item && !data?.items)
+    return { message: 'error', code: 204, data: null };
 
-  if(!player_data?.item)
-    return { message: 'error', code: -1, data: null };
-
-    
-   return { message: 'success', code: 200, data:  mapNowPlaying(player_data) };
+  const player_data = playing ? mapNowPlaying(data) : mapRecentlyPlayed(data);
+  
+  return { message: 'success', code: 200, data: player_data };  
 }

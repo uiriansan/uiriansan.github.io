@@ -18,12 +18,10 @@ interface Track {
 }
 
 interface NowPlaying {
-  playing : true;
   track : Track;
 }
 
 interface RecentlyPlayed {
-  playing : false;
   tracks : Track[];
   played_at : string;
 }
@@ -63,12 +61,10 @@ const mapRecentTrack = (item: any) : Track => ({
 });
 
 const mapNowPlaying = (data : any) : NowPlaying => ({
-  playing: true,
   track: mapPlayingTrack(data),
 });
 
 const mapRecentlyPlayed = (data : any) : RecentlyPlayed => ({
-  playing: false,
   tracks: data.items.map(mapRecentTrack),
   played_at: data.items[0].played_at
 });
